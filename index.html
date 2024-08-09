@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>quản lý thu nhập</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">QUẢN LÝ THU NHẬP</h1>
+
+        <div class="alert alert-info">
+            <h4><strong>Hướng dẫn sử dụng:</strong></h4>
+            <ul>
+                <li>Đối với các trường hợp nhập tiền (thu nhập, chi phí), nếu bạn nhập số dưới 1000, hệ thống sẽ tự động
+                    nhân lên 1000.<br>Ví dụ: nếu bạn nhập 10, hệ thống sẽ hiểu là 10.000 VND.</li>
+                <li>Đối với <b>tiền tổng</b> bạn sẽ cần phải lấy số tiền <b class="text-success">trong máy (+ 580K sẽ do
+                        hệ thống tự động cộng)</b> để nhập liệu.</li>
+                <li>Đối với <b>chi phí ca tối</b> bạn chỉ cần nhập chi phí ca tối của bạn, hệ thống sẽ tự động cộng chi
+                    phí ca sáng vào cho bạn.</li>
+                <li><strong class="text-danger">Web không lưu được dữ liệu vì thế nếu bạn bấm load wed sẽ mất toàn bộ
+                        những thông tin bạn điền trước đó.</strong></li>
+            </ul>
+        </div>
+
+        <!-- Ca Sáng -->
+        <div class="card my-4">
+            <div class="card-header">
+                Ca Sáng
+            </div>
+            <div class="card-body">
+                <form id="morningForm">
+                    <div class="form-group">
+                        <label for="morningCups">Số ly ca sáng:</label>
+                        <input type="number" class="form-control" id="morningCups" required>
+                        <div class="invalid-feedback">Vui lòng nhập số ly ca sáng.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="morningAdditionalCups">Số ly thêm vào ca sáng:</label>
+                        <input type="number" class="form-control" id="morningAdditionalCups" value="0">
+                        <div class="invalid-feedback">Vui lòng nhập số ly thêm vào ca sáng.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="morningSoldCups">Số ly bán được ca sáng:</label>
+                        <input type="number" class="form-control" id="morningSoldCups" required>
+                        <div class="invalid-feedback">Vui lòng nhập số ly bán được ca sáng.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="morningIncome">Số tiền tổng:</label>
+                        <input type="number" class="form-control" id="morningIncome" placeholder="Tiền máy+580k"
+                            required>
+
+                        <div class="invalid-feedback">Vui lòng nhập số tiền tổng.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="morningTransfer">Chi phí chuyển khoản:</label>
+                        <input type="number" class="form-control" id="morningTransfer" value="0">
+                        <div class="invalid-feedback">Vui lòng nhập chi phí chuyển khoản.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="morningGrab">Chi phí grap:</label>
+                        <input type="number" class="form-control" id="morningGrab" value="0">
+                        <div class="invalid-feedback">Vui lòng nhập chi phí grap.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="morningGojek">Chi phí gojeck:</label>
+                        <input type="number" class="form-control" id="morningGojek" value="0">
+                        <div class="invalid-feedback">Vui lòng nhập chi phí gojeck.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="morningOtherCosts">Chi phí khác:</label>
+                        <input type="number" class="form-control" id="morningOtherCosts" value="0">
+                        <div class="invalid-feedback">Vui lòng nhập chi phí khác.</div>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="calculateMorning()">Tính toán</button>
+                </form>
+                <div class="mt-3" id="morningResults"></div>
+            </div>
+        </div>
+
+        <!-- Ca Tối -->
+        <div class="card my-4">
+            <div class="card-header">
+                Ca Tối
+            </div>
+            <div class="card-body">
+                <form id="eveningForm">
+                    <div class="form-group">
+                        <label for="eveningCups">Số ly ca tối:</label>
+                        <input type="number" class="form-control" id="eveningCups" required>
+                        <div class="invalid-feedback">Vui lòng nhập số ly ca tối.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eveningAdditionalCups">Số ly thêm vào ca tối:</label>
+                        <input type="number" class="form-control" id="eveningAdditionalCups" value="0">
+                        <div class="invalid-feedback">Vui lòng nhập số ly thêm vào ca tối.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eveningSoldCups">Số ly bán được ca tối:</label>
+                        <input type="number" class="form-control" id="eveningSoldCups" required>
+                        <div class="invalid-feedback">Vui lòng nhập số ly bán được ca tối.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eveningIncome">Số tiền tổng:</label>
+                        <input type="number" class="form-control" id="eveningIncome" placeholder="Tiền máy+580k"
+                            required>
+                        <div class="invalid-feedback">Vui lòng nhập số tiền tổng.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eveningTransfer">Chi phí chuyển khoản:</label>
+                        <input type="number" class="form-control" id="eveningTransfer" value="0">
+                        <div class="invalid-feedback">Vui lòng nhập chi phí chuyển khoản.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eveningGrab">Chi phí grap:</label>
+                        <input type="number" class="form-control" id="eveningGrab" value="0">
+                        <div class="invalid-feedback">Vui lòng nhập chi phí grap.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eveningGojek">Chi phí gojeck:</label>
+                        <input type="number" class="form-control" id="eveningGojek" value="0">
+                        <div class="invalid-feedback">Vui lòng nhập chi phí gojeck.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eveningOtherCosts">Chi phí khác:</label>
+                        <input type="number" class="form-control" id="eveningOtherCosts" value="0">
+                        <div class="invalid-feedback">Vui lòng nhập chi phí khác.</div>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="calculateEvening()">Tính toán</button>
+                </form>
+                <div class="mt-3" id="eveningResults"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
